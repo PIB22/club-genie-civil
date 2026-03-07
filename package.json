@@ -1,0 +1,9 @@
+{
+  "name": "club-genie-civil-epd",
+  "version": "1.0.0",
+  "description": "Site du Club Génie Civil — École Polytechnique de Diamniadio",
+  "type": "module",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.0"
+  }
+}
