@@ -2143,23 +2143,12 @@ function addPub() {
   pubs.unshift(obj);
   ["ptit","paut","pres","pdat","plnk"].forEach(function(x){ document.getElementById(x).value = ""; });
   renderPubs(); renderPAdm(); updStats(); autoSave();
-  fetch("/api/sync", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
-    body: JSON.stringify({ table: "publications", records: pubs })
-  });
-}
 }
 
 function delPub(id) {
   if (confirm("Supprimer cette publication ?")) {
     pubs = pubs.filter(function(p){ return p.id !== id; });
     renderPubs(); renderPAdm(); updStats(); autoSave();
-    fetch("/api/sync", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
-      body: JSON.stringify({ table: "publications", records: pubs })
-    });
   }
 }
 
@@ -2722,16 +2711,10 @@ function addRes() {
     views: 0
   };
   if (!obj.titre) { alert("Veuillez saisir un titre."); return; }
-ressources.push(obj);
+  ressources.push(obj);
   clearResForm();
   updResCounts(); autoSave();
-  fetch("/api/sync", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
-    body: JSON.stringify({ table: "ressources", records: ressources })
-  });
   alert("Ressource publiée dans : " + RES_META[obj.cat].label);
-}
 }
 
 function clearResForm() {
@@ -4000,13 +3983,14 @@ function startSessionTimer() {
 // Load data: localStorage d'abord (affichage immédiat), puis API (mise à jour)
 (function() {
   // 1. Chargement synchrone localStorage (affichage rapide)
- var loaded = false;
-  // Toujours charger depuis Neon (priorité API)
-  localStorage.removeItem(LS_KEY);
+  var loaded = false;
   updResCounts();
   renderAll();
   refreshStorInfo();
   initJb();
+
+  // 2. Chargement API (données fraîches depuis la base)
+  //    Priorité si l'API répond, sinon localStorage garde la main
   loadFromAPI();
 
   // Sécurité : masquer les logs en production
