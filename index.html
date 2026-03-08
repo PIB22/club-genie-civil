@@ -1563,7 +1563,7 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
     <li id="nv-membres"><a href="#membres">Membres</a></li>
     <li id="nv-publications"><a href="#publications">Publications</a></li>
     <li id="nv-projets"><a href="#projets">Projets</a></li>
-    <li id="nv-evenements"><a href="#evenements">Événements</a></li>
+    <li id="nv-evenements" style="display:none"><a href="#evenements">Événements</a></li>
     <li id="nv-cours"><a href="#cours">Cours</a></li>
     <li id="nv-ressources"><a href="#ressources">Ressources</a></li>
     <li id="nv-galerie"><a href="#galerie">Galerie</a></li>
@@ -1579,7 +1579,7 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
   <a href="#membres" onclick="closeMob()">Membres</a>
   <a href="#publications" onclick="closeMob()">Publications</a>
   <a href="#projets" onclick="closeMob()">Projets</a>
-  <a href="#evenements" onclick="closeMob()">Événements</a>
+  <a href="#evenements" onclick="closeMob()" style="display:none">Événements</a>
   <a href="#cours" onclick="closeMob()">Cours</a>
   <a href="#ressources" onclick="closeMob()">Ressources</a>
   <a href="#contact" onclick="closeMob()">Contact</a>
@@ -1683,7 +1683,7 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
 </section>
 
 <!-- EVENEMENTS -->
-<section id="evenements">
+<section id="evenements" style="display:none">
   <div class="sl">Agenda</div>
   <h2 class="stit">Événements à venir</h2>
   <p class="sdesc">Conférences, ateliers, sorties terrain et compétitions.</p>
@@ -1798,7 +1798,7 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
     </ul></div>
     <div class="fc"><h4>Le club</h4><ul>
       <li><a href="#contact">Nous rejoindre</a></li><li><a href="#contact">Partenariats</a></li>
-      <li><a href="#evenements">Agenda</a></li><li><a href="#contact">Contact</a></li>
+      <li style="display:none"><a href="#evenements">Agenda</a></li><li><a href="#contact">Contact</a></li>
     </ul></div>
   </div>
   <div class="fb"><p id="fcpy">© 2026 Club Génie Civil — Polytechnique Diamniadio</p><p>Construit avec passion</p></div>
@@ -4029,6 +4029,10 @@ function startSessionTimer() {
         var el = document.getElementById(id); if (el) el.src = cfg.logo_url;
       });
     }
+    if (cfg.about_titre) { var e1 = document.getElementById("atit"); if (e1) e1.innerHTML = cfg.about_titre; }
+    if (cfg.about_texte) { var e2 = document.getElementById("adesc"); if (e2) e2.textContent = cfg.about_texte; }
+    if (cfg.about_photo1) { var e3 = document.getElementById("about-img1"); var e3p = document.getElementById("about-img1-placeholder"); if (e3) { e3.src = cfg.about_photo1; e3.style.display = "block"; } if (e3p) e3p.style.display = "none"; }
+    if (cfg.about_photo2) { var e4 = document.getElementById("about-img2"); var e4p = document.getElementById("about-img2-placeholder"); if (e4) { e4.src = cfg.about_photo2; e4.style.display = "block"; } if (e4p) e4p.style.display = "none"; }
   }).catch(function(){});
   // Sécurité : masquer les logs en production
 
