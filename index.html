@@ -3416,6 +3416,7 @@ function apiSaveTable(table, records) {
 // ---- Save : localStorage + API en arrière-plan ----
 function saveLS() {
   try {
+    if (!_apiToken) _apiToken = sessionStorage.getItem("cgc_api_token");
     var data = getAllData();
     localStorage.setItem(LS_KEY, JSON.stringify(data));
     // Sync API si connecté
