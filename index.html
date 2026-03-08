@@ -2143,12 +2143,23 @@ function addPub() {
   pubs.unshift(obj);
   ["ptit","paut","pres","pdat","plnk"].forEach(function(x){ document.getElementById(x).value = ""; });
   renderPubs(); renderPAdm(); updStats(); autoSave();
+  fetch("/api/sync", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
+    body: JSON.stringify({ table: "publications", records: pubs })
+  });
+}
 }
 
 function delPub(id) {
   if (confirm("Supprimer cette publication ?")) {
     pubs = pubs.filter(function(p){ return p.id !== id; });
     renderPubs(); renderPAdm(); updStats(); autoSave();
+    fetch("/api/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
+      body: JSON.stringify({ table: "publications", records: pubs })
+    });
   }
 }
 
