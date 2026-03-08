@@ -3945,7 +3945,7 @@ function startSessionTimer() {
 // Load data: localStorage d'abord (affichage immédiat), puis API (mise à jour)
 (function() {
   // 1. Chargement synchrone localStorage (affichage rapide)
-  var loaded = loadLS();
+  var loaded = false;
   updResCounts();
   renderAll();
   refreshStorInfo();
