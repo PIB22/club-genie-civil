@@ -2074,9 +2074,13 @@ function saveMem() {
     ph:   mPhData
   };
   if (!obj.name) { alert("Veuillez saisir un nom."); return; }
-  if (id === -1) { mems.push(obj); } else { var i = mems.findIndex(function(m){ return m.id === id; }); if (i >= 0) mems[i] = obj; }
+ if (id === -1) { mems.push(obj); } else { var i = mems.findIndex(function(m){ return m.id === id; }); if (i >= 0) mems[i] = obj; }
   resetMem(); renderMems(); renderMAdm(); updStats(); autoSave();
-  document.getElementById("mform-title").textContent = "➕ Ajouter un membre";
+  fetch("/api/sync", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
+    body: JSON.stringify({ table: "membres", records: mems })
+  });
 }
 
 function resetMem() {
@@ -2107,7 +2111,12 @@ function editMem(id) {
 function delMem(id) {
   if (confirm("Supprimer ce membre ?")) {
     mems = mems.filter(function(m){ return m.id !== id; });
-    renderMems(); renderMAdm(); updStats();
+    renderMems(); renderMAdm(); updStats(); autoSave();
+    fetch("/api/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
+      body: JSON.stringify({ table: "membres", records: mems })
+    });
   }
 }
 
