@@ -3381,25 +3381,50 @@ function setAllData(d) {
   if (d.nextId)       nextId       = d.nextId;
 }
 
-// ---- Save to localStorage ----
+// ---- API helpers ----
+var API_BASE = "/api";
+var _apiToken = null;
+
+function apiGet(table) {
+  return fetch(API_BASE + "/data?table=" + table)
+    .then(function(r){ return r.json(); })
+    .catch(function(e){ console.warn("API GET error:", e); return []; });
+}
+
+function apiSaveTable(table, records) {
+  if (!_apiToken) return Promise.resolve();
+  return fetch(API_BASE + "/data", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + _apiToken },
+    body: JSON.stringify({ action: "sync", table: table, records: records })
+  }).catch(function(e){ console.warn("API save error:", e); });
+}
+
+// ---- Save : localStorage + API en arrière-plan ----
 function saveLS() {
   try {
     var data = getAllData();
     localStorage.setItem(LS_KEY, JSON.stringify(data));
-    showSaveToast("✅ Sauvegardé");
+    // Sync API si connecté
+    if (_apiToken) {
+      apiSaveTable("membres", mems);
+      apiSaveTable("galerie", gals);
+      showSaveToast("✅ Sauvegardé (base de données)");
+    } else {
+      showSaveToast("✅ Sauvegardé");
+    }
   } catch(e) {
     showSaveToast("⚠️ Erreur sauvegarde : " + e.message, true);
   }
 }
 
-// ---- Load from localStorage ----
+// ---- Load from localStorage (fallback synchrone) ----
 function loadLS() {
   try {
     var raw = localStorage.getItem(LS_KEY);
     if (!raw) return false;
     var d = JSON.parse(raw);
     setAllData(d);
-    // Restore WA config inputs if admin panel is open
     if (d.waConfig) {
       var wn = document.getElementById("wa-number");
       var wna = document.getElementById("wa-name");
@@ -3411,6 +3436,71 @@ function loadLS() {
     console.warn("localStorage load error:", e);
     return false;
   }
+}
+
+// ---- Load from API (asynchrone, prioritaire) ----
+function loadFromAPI() {
+  Promise.all([
+    apiGet("membres"),
+    apiGet("galerie"),
+    apiGet("publications"),
+    apiGet("evenements"),
+    apiGet("projets")
+  ]).then(function(results) {
+    var apiMems   = results[0] || [];
+    var apiGals   = results[1] || [];
+    var apiPubs   = results[2] || [];
+    var apiEvts   = results[3] || [];
+    var apiProjs  = results[4] || [];
+
+    // Convertir format API → format interne
+    if (apiMems.length > 0) {
+      mems = apiMems.map(function(m) {
+        return {
+          id:   m.id,
+          name: m.nom || m.name || "",
+          role: m.role || "",
+          niv:  m.niveau || m.niv || "",
+          spec: m.specialite || m.spec || "",
+          bio:  m.bio || "",
+          eml:  m.email || m.eml || "",
+          lin:  m.linkedin || m.lin || "",
+          ph:   m.photo || m.ph || ""
+        };
+      });
+    }
+    if (apiGals.length > 0) {
+      gals = apiGals.map(function(g) {
+        return {
+          id:   g.id,
+          typ:  g.type || g.typ || "photo",
+          src:  g.src || "",
+          tit:  g.titre || g.tit || "",
+          feat: g.featured || g.feat || false,
+          bg:   g.bg_color || g.bg || ""
+        };
+      });
+    }
+    if (apiPubs.length > 0) {
+      pubs = apiPubs.map(function(p) {
+        return {
+          id:  p.id,
+          tit: p.titre || p.tit || "",
+          aut: p.auteur || p.aut || "",
+          cat: p.categorie || p.cat || "",
+          res: p.contenu || p.res || "",
+          dat: p.date_pub || p.dat || "",
+          lnk: p.lien || p.lnk || "#"
+        };
+      });
+    }
+
+    renderAll();
+    updStats();
+    updResCounts();
+  }).catch(function(e) {
+    console.warn("Chargement API échoué, fallback localStorage:", e);
+  });
 }
 
 // ---- Auto-save on every data change ----
@@ -3852,16 +3942,19 @@ function startSessionTimer() {
 // ================================================================
 // INIT
 // ================================================================
-// Load saved data from localStorage on startup
+// Load data: localStorage d'abord (affichage immédiat), puis API (mise à jour)
 (function() {
+  // 1. Chargement synchrone localStorage (affichage rapide)
   var loaded = loadLS();
   updResCounts();
   renderAll();
   refreshStorInfo();
   initJb();
-  if (loaded) {
-    // Données chargées
-  }
+
+  // 2. Chargement API (données fraîches depuis la base)
+  //    Priorité si l'API répond, sinon localStorage garde la main
+  loadFromAPI();
+
   // Sécurité : masquer les logs en production
   if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
     console.log = function(){};
