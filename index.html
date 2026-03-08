@@ -2475,13 +2475,6 @@ function applyHeroLogo(src) {
   if (hero) hero.src = src;
   if (prev) prev.src = src;
   document.getElementById("heroLogoUrl").value = "";
-  // Sauvegarder dans Neon
-  fetch("/api/config", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
-    body: JSON.stringify({ cle: "logo_url", valeur: src })
-  });
-}
 }
 
 function syncHeroWithNav() {
@@ -3999,15 +3992,6 @@ function startSessionTimer() {
   // 2. Chargement API (données fraîches depuis la base)
   //    Priorité si l'API répond, sinon localStorage garde la main
   loadFromAPI();
-  // Charger la config du site (logo, couleurs, etc.)
-  fetch("/api/config").then(function(r){ return r.json(); }).then(function(cfg) {
-    if (cfg.logo_url) {
-      var logoHero = document.getElementById("logoHero");
-      var logoNav = document.getElementById("logoNav");
-      if (logoHero) logoHero.src = cfg.logo_url;
-      if (logoNav) logoNav.src = cfg.logo_url;
-    }
-  }).catch(function(){});
 
   // Sécurité : masquer les logs en production
   if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
