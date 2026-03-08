@@ -1839,41 +1839,15 @@ async function hashPassword(pwd) {
 }
 var nextId = 200;
 
-var mems = [
-  {id:1,name:"Amadou Diallo",role:"Président",niv:"M2",spec:"Structures et Matériaux",bio:"Étudiant en Master 2 Génie Civil. Dirige le club depuis 2023.",eml:"a.diallo[at]club-gc.sn",lin:"#",ph:""},
-  {id:2,name:"Fatoumata Sow",role:"Vice-Présidente",niv:"M2",spec:"Hydraulique et Environnement",bio:"Spécialiste en Hydraulique. Coordonne les activités académiques.",eml:"f.sow[at]club-gc.sn",lin:"#",ph:""},
-  {id:3,name:"Ibrahima Ba",role:"Resp. Recherche",niv:"Doc",spec:"Géotechnique",bio:"Doctorant en Géotechnique, fondations profondes. Supervise les publications.",eml:"i.ba[at]club-gc.sn",lin:"#",ph:""},
-  {id:4,name:"Mariama Balde",role:"Resp. Communications",niv:"M1",spec:"Infrastructures durables",bio:"M1 Génie Civil, passionnée par les infrastructures durables.",eml:"m.balde[at]club-gc.sn",lin:"#",ph:""},
-  {id:5,name:"Ousmane Ndiaye",role:"Trésorier",niv:"L3",spec:"BIM et Modélisation",bio:"L3 Génie Civil avec compétences en BIM et modélisation structurale.",eml:"o.ndiaye[at]club-gc.sn",lin:"#",ph:""},
-  {id:6,name:"Aissatou Camara",role:"Resp. Événements",niv:"M2",spec:"Transport et Mobilité",bio:"M2 Transport et Mobilité. Organise les conférences et sorties terrain.",eml:"a.camara[at]club-gc.sn",lin:"#",ph:""}
-];
+var mems = [];
 
 var cours = [];
 
-var pubs = [
-  {id:1,tit:"Analyse du comportement dynamique des ponts à haubans sous charge sismique",aut:"I. Ba, A. Diallo, Prof. M. Sall — 2024",cat:"structures",res:"Étude comparative des réponses structurales de ponts à câbles soumis à différents profils sismiques.",dat:"Mars 2024 · 28 pages",lnk:"#"},
-  {id:2,tit:"Modélisation des crues urbaines par approche hydrologique distribuée",aut:"F. Sow, K. Traoré — 2024",cat:"hydraulique",res:"Application hydrologique pour la prédiction des risques inondation en milieu urbain.",dat:"Janv. 2024 · 35 pages",lnk:"#"},
-  {id:3,tit:"Stabilisation des sols latéritiques pour routes en Afrique de Ouest",aut:"I. Ba, O. Ndiaye — 2023",cat:"geotechnique",res:"Évaluation des techniques de stabilisation chimique et mécanique des sols latéritiques.",dat:"Nov. 2023 · 42 pages",lnk:"#"},
-  {id:4,tit:"Optimisation des réseaux de transport urbain par algorithmes génétiques",aut:"A. Camara, M. Balde — 2023",cat:"transport",res:"Méthodologie optimisation des itinéraires de transport collectif.",dat:"Sept. 2023 · 31 pages",lnk:"#"},
-  {id:5,tit:"Impact des matériaux alternatifs au béton classique",aut:"F. Sow, A. Diallo — 2023",cat:"environnement",res:"Analyse cycle de vie des matériaux bio-sourcés et réduction empreinte carbone.",dat:"Juin 2023 · 39 pages",lnk:"#"},
-  {id:6,tit:"Comportement au feu des structures mixtes acier-béton",aut:"I. Ba, Prof. K. Dieng — 2022",cat:"structures",res:"Revue systématique des méthodes de dimensionnement des structures mixtes sous feu.",dat:"Déc. 2022 · 46 pages",lnk:"#"}
-];
+var pubs = [];
 
-var evts = [
-  {id:1,tit:"Conférence : Innovations en construction durable",typ:"conf",jour:"15",mois:"Mar 2026",lieu:"Amphi A, Campus",hr:"14h – 17h"},
-  {id:2,tit:"Atelier : Modélisation BIM avec Revit",typ:"atel",jour:"22",mois:"Mar 2026",lieu:"Salle Info 202",hr:"9h – 12h"},
-  {id:3,tit:"Visite de chantier — Pont Autoroutier Nord",typ:"sort",jour:"05",mois:"Avr 2026",lieu:"Autoroute Nord km 45",hr:"7h30 – 14h"},
-  {id:4,tit:"Compétition de ponts en spaghetti",typ:"comp",jour:"18",mois:"Avr 2026",lieu:"Hall Génie Civil",hr:"10h – 16h"},
-  {id:5,tit:"Table ronde : Débouchés en Génie Civil",typ:"conf",jour:"10",mois:"Mai 2026",lieu:"Salle Conférences",hr:"15h – 18h"}
-];
+var pubs = [];
 
-var gals = [
-  {id:1,typ:"photo",src:"",tit:"Conférence 2024",feat:true,bg:"linear-gradient(135deg,#1a2a5e,#243580)"},
-  {id:2,typ:"photo",src:"",tit:"Visite de chantier",feat:false,bg:"linear-gradient(135deg,#6b3a1a,#a0632a)"},
-  {id:3,typ:"photo",src:"",tit:"Atelier BIM",feat:false,bg:"linear-gradient(135deg,#0f3a20,#1a6030)"},
-  {id:4,typ:"photo",src:"",tit:"Compétition ponts",feat:false,bg:"linear-gradient(135deg,#29a8e0,#1a6080)"},
-  {id:5,typ:"photo",src:"",tit:"Remise de prix",feat:false,bg:"linear-gradient(135deg,#3a1a5e,#5a2a8c)"}
-];
+var gals = [];
 
 var pendingG = [];
 var lbIdx = 0;
