@@ -1926,7 +1926,8 @@ function doLogin() {
           _apiToken = res.token;
           sessionStorage.setItem("cgc_api_token", res.token);
           sessionStorage.setItem("cgc_session", res.token);
-         sessionStorage.setItem("cgc_session_exp", String(Date.now() + 7200000));
+          sessionStorage.setItem("cgc_session_exp", String(Date.now() + 7200000));
+          localStorage.setItem("cgc_api_token", res.token);
         }
         sessionStorage.setItem("cgc_session_exp", String(Date.now() + 7200000));
         closeLogin();
