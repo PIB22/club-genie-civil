@@ -3440,13 +3440,13 @@ function loadLS() {
 
 // ---- Load from API (asynchrone, prioritaire) ----
 function loadFromAPI() {
-  Promise.all([
+ Promise.all([
     apiGet("membres"),
     apiGet("galerie"),
     apiGet("publications"),
     apiGet("evenements"),
     apiGet("projets"),
-    apiGet("ressources")
+    fetch("/api/ressources").then(function(r){ return r.json(); }).catch(function(){ return []; })
   ]).then(function(results) {
     var apiMems   = results[0] || [];
     var apiGals   = results[1] || [];
