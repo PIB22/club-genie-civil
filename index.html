@@ -2711,10 +2711,16 @@ function addRes() {
     views: 0
   };
   if (!obj.titre) { alert("Veuillez saisir un titre."); return; }
-  ressources.push(obj);
+ressources.push(obj);
   clearResForm();
   updResCounts(); autoSave();
+  fetch("/api/sync", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
+    body: JSON.stringify({ table: "ressources", records: ressources })
+  });
   alert("Ressource publiée dans : " + RES_META[obj.cat].label);
+}
 }
 
 function clearResForm() {
