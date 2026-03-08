@@ -3526,11 +3526,39 @@ function loadFromAPI() {
         return {
           id:  p.id,
           tit: p.titre || p.tit || "",
-          aut: p.auteur || p.aut || "",
+          aut: p.auteurs || p.auteur || p.aut || "",
           cat: p.categorie || p.cat || "",
-          res: p.contenu || p.res || "",
+          res: p.resume || p.contenu || p.res || "",
           dat: p.date_pub || p.dat || "",
           lnk: p.lien || p.lnk || "#"
+        };
+      });
+    }
+    if (apiEvts.length > 0) {
+      evts = apiEvts.map(function(e) {
+        return {
+          id:   e.id,
+          tit:  e.titre || e.tit || "",
+          typ:  e.type || e.typ || "",
+          jour: e.jour || "",
+          mois: e.mois_annee || e.mois || "",
+          lieu: e.lieu || "",
+          hr:   e.heure || e.hr || ""
+        };
+      });
+    }
+    if (apiProjs.length > 0) {
+      projetsData = apiProjs.map(function(p) {
+        return {
+          id:   p.id,
+          nom:  p.titre || p.nom || "",
+          desc: p.description || p.desc || "",
+          stat: p.statut || p.stat || "",
+          img:  p.image_url || p.img || "",
+          lien: p.lien || "",
+          bg1:  p.bg_color1 || p.bg1 || "#0d2a40",
+          bg2:  p.bg_color2 || p.bg2 || "#1a4a6c",
+          feat: p.featured || p.feat || false
         };
       });
     }
