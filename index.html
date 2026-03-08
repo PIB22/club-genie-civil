@@ -4029,6 +4029,14 @@ function startSessionTimer() {
         var el = document.getElementById(id); if (el) el.src = cfg.logo_url;
       });
     }
+    if (cfg.about_titre) { var el = document.getElementById("atit"); if (el) el.innerHTML = cfg.about_titre; }
+    if (cfg.about_texte) { var el = document.getElementById("adesc"); if (el) el.textContent = cfg.about_texte; }
+    if (cfg.about_photo1) { var el = document.getElementById("about-img1"); if (el) { el.src = cfg.about_photo1; el.style.display = "block"; document.getElementById("about-img1-placeholder").style.display = "none"; } }
+    if (cfg.about_photo2) { var el = document.getElementById("about-img2"); if (el) { el.src = cfg.about_photo2; el.style.display = "block"; document.getElementById("about-img2-placeholder").style.display = "none"; } }
+      ["logoNav","logoHero","logoFooter","logoAdminImg","logoLoginImg","logoPreview"].forEach(function(id){
+        var el = document.getElementById(id); if (el) el.src = cfg.logo_url;
+      });
+    }
   }).catch(function(){});
   // Sécurité : masquer les logs en production
 
