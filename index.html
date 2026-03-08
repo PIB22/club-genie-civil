@@ -2186,15 +2186,9 @@ function renderEvts() {
 function addEvt() {
   var obj = {id:nextId++, tit:document.getElementById("etit").value.trim(), typ:document.getElementById("etyp").value, jour:document.getElementById("ejour").value.trim(), mois:document.getElementById("emois").value.trim(), lieu:document.getElementById("elieu").value.trim(), hr:document.getElementById("ehr").value.trim()};
   if (!obj.tit) { alert("Veuillez saisir un titre."); return; }
- evts.push(obj);
+  evts.push(obj);
   ["etit","ejour","emois","elieu","ehr"].forEach(function(x){ document.getElementById(x).value = ""; });
   renderEvts(); renderEAdm(); updStats(); autoSave();
-  fetch("/api/sync", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": "Bearer cgc-secret-2024" },
-    body: JSON.stringify({ table: "evenements", records: evts })
-  });
-}
 }
 
 function delEvt(id) {
