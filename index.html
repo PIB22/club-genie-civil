@@ -1683,7 +1683,7 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
 </section>
 
 <!-- EVENEMENTS -->
-<section id="evenements">
+<section id="evenements" style="display:none">
   <div class="sl">Agenda</div>
   <h2 class="stit">Événements à venir</h2>
   <p class="sdesc">Conférences, ateliers, sorties terrain et compétitions.</p>
@@ -1798,7 +1798,7 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
     </ul></div>
     <div class="fc"><h4>Le club</h4><ul>
       <li><a href="#contact">Nous rejoindre</a></li><li><a href="#contact">Partenariats</a></li>
-      <li><a href="#evenements">Agenda</a></li><li><a href="#contact">Contact</a></li>
+      <li style="display:none"><a href="#evenements">Agenda</a></li><li><a href="#contact">Contact</a></li>
     </ul></div>
   </div>
   <div class="fb"><p id="fcpy">© 2026 Club Génie Civil — Polytechnique Diamniadio</p><p>Construit avec passion</p></div>
@@ -4025,6 +4025,14 @@ function startSessionTimer() {
   // Charger logo depuis Neon
   fetch("/api/config").then(function(r){ return r.json(); }).then(function(cfg) {
     if (cfg.logo_url) {
+      ["logoNav","logoHero","logoFooter","logoAdminImg","logoLoginImg","logoPreview"].forEach(function(id){
+        var el = document.getElementById(id); if (el) el.src = cfg.logo_url;
+      });
+    }
+    if (cfg.about_titre) { var el = document.getElementById("atit"); if (el) el.innerHTML = cfg.about_titre; }
+    if (cfg.about_texte) { var el = document.getElementById("adesc"); if (el) el.textContent = cfg.about_texte; }
+    if (cfg.about_photo1) { var el = document.getElementById("about-img1"); if (el) { el.src = cfg.about_photo1; el.style.display = "block"; document.getElementById("about-img1-placeholder").style.display = "none"; } }
+    if (cfg.about_photo2) { var el = document.getElementById("about-img2"); if (el) { el.src = cfg.about_photo2; el.style.display = "block"; document.getElementById("about-img2-placeholder").style.display = "none"; } }
       ["logoNav","logoHero","logoFooter","logoAdminImg","logoLoginImg","logoPreview"].forEach(function(id){
         var el = document.getElementById(id); if (el) el.src = cfg.logo_url;
       });
