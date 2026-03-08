@@ -3983,14 +3983,13 @@ function startSessionTimer() {
 // Load data: localStorage d'abord (affichage immédiat), puis API (mise à jour)
 (function() {
   // 1. Chargement synchrone localStorage (affichage rapide)
-  var loaded = false;
+ var loaded = false;
+  // Toujours charger depuis Neon (priorité API)
+  localStorage.removeItem(LS_KEY);
   updResCounts();
   renderAll();
   refreshStorInfo();
   initJb();
-
-  // 2. Chargement API (données fraîches depuis la base)
-  //    Priorité si l'API répond, sinon localStorage garde la main
   loadFromAPI();
 
   // Sécurité : masquer les logs en production
