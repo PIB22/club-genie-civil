@@ -3423,7 +3423,7 @@ function saveLS() {
     var data = getAllData();
     localStorage.setItem(LS_KEY, JSON.stringify(data));
     var secret = "cgc-secret-2024";
-    var tables = [["membres", mems], ["galerie", gals], ["publications", pubs], ["evenements", evts], ["ressources", ressources]];
+    var tables = [["membres", mems], ["galerie", gals], ["publications", pubs], ["evenements", evts], ["projets", projetsData], ["ressources", ressources]];
     Promise.all(tables.map(function(t) {
       return fetch("/api/sync", {
         method: "POST",
