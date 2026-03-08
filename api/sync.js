@@ -46,6 +46,12 @@ export default async function handler(req, res) {
         await sql`INSERT INTO evenements (titre, type, jour, mois_annee, lieu, heure)
           VALUES (${e.tit||e.titre||''}, ${e.typ||e.type||''}, ${e.jour||''}, ${e.mois||e.mois_annee||''}, ${e.lieu||''}, ${e.hr||e.heure||''})`;
       }
+    } else if (table === 'projets') {
+      await sql`DELETE FROM projets`;
+      for (const p of records) {
+        await sql`INSERT INTO projets (titre, description, statut, image_url, lien, bg_color1, bg_color2, featured)
+          VALUES (${p.nom||p.titre||''}, ${p.desc||p.description||''}, ${p.stat||p.statut||''}, ${p.img||p.image_url||''}, ${p.lien||''}, ${p.bg1||p.bg_color1||''}, ${p.bg2||p.bg_color2||''}, ${p.feat||p.featured||false})`;
+      }
     } else if (table === 'ressources') {
       await sql`DELETE FROM ressources`;
       for (const r of records) {
@@ -53,7 +59,7 @@ export default async function handler(req, res) {
           VALUES (${r.titre||''}, ${r.desc||r.description||''}, ${r.cat||r.categorie||''}, ${r.ftype||r.type_fichier||'pdf'}, ${r.lien||''}, ${r.img||r.image_url||null}, ${r.views||0}, CURRENT_DATE)`;
       }
     } else {
-      return res.status(400).json({ error: 'Table non supportée' });
+      return res.status(400).json({ error: 'Table non supportée: ' + table });
     }
 
     return res.status(200).json({ success: true });
