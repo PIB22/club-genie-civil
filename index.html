@@ -3409,6 +3409,9 @@ function saveLS() {
     if (_apiToken) {
       apiSaveTable("membres", mems);
       apiSaveTable("galerie", gals);
+      apiSaveTable("publications", pubs);
+      apiSaveTable("evenements", evts);
+      apiSaveTable("ressources", ressources);
       showSaveToast("✅ Sauvegardé (base de données)");
     } else {
       showSaveToast("✅ Sauvegardé");
