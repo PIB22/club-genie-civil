@@ -3420,20 +3420,21 @@ function apiSaveTable(table, records) {
 // ---- Save : localStorage + API en arrière-plan ----
 function saveLS() {
   try {
-    if (!_apiToken) _apiToken = sessionStorage.getItem("cgc_api_token") || localStorage.getItem("cgc_api_token");
-    var data = getAllData();
+   var data = getAllData();
     localStorage.setItem(LS_KEY, JSON.stringify(data));
-    // Sync API si connecté
-    if (_apiToken) {
-      apiSaveTable("membres", mems);
-      apiSaveTable("galerie", gals);
-      apiSaveTable("publications", pubs);
-      apiSaveTable("evenements", evts);
-      apiSaveTable("ressources", ressources);
+    var secret = "cgc-secret-2024";
+    var tables = [["membres", mems], ["galerie", gals], ["publications", pubs], ["evenements", evts], ["ressources", ressources]];
+    Promise.all(tables.map(function(t) {
+      return fetch("/api/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + secret },
+        body: JSON.stringify({ table: t[0], records: t[1] })
+      });
+    })).then(function() {
       showSaveToast("✅ Sauvegardé (base de données)");
-    } else {
-      showSaveToast("✅ Sauvegardé");
-    }
+    }).catch(function() {
+      showSaveToast("⚠️ Erreur sauvegarde");
+    });
   } catch(e) {
     showSaveToast("⚠️ Erreur sauvegarde : " + e.message, true);
   }
