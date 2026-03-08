@@ -8,7 +8,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' });
 
-  // Vérifier le secret
   const auth = req.headers['authorization'] || '';
   const secret = auth.replace('Bearer ', '');
   if (secret !== process.env.API_SECRET) {
@@ -38,8 +37,8 @@ export default async function handler(req, res) {
     } else if (table === 'publications') {
       await sql`DELETE FROM publications`;
       for (const p of records) {
-        await sql`INSERT INTO publications (titre, auteur, categorie, contenu, date_pub, lien)
-          VALUES (${p.tit||p.titre||''}, ${p.aut||p.auteur||''}, ${p.cat||p.categorie||''}, ${p.res||p.contenu||''}, ${p.dat||p.date_pub||null}, ${p.lnk||p.lien||''})`;
+        await sql`INSERT INTO publications (titre, auteurs, categorie, resume, date_pub, lien)
+          VALUES (${p.tit||p.titre||''}, ${p.aut||p.auteurs||''}, ${p.cat||p.categorie||''}, ${p.res||p.resume||''}, ${p.dat||p.date_pub||null}, ${p.lnk||p.lien||''})`;
       }
     } else if (table === 'evenements') {
       await sql`DELETE FROM evenements`;
