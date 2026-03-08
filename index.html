@@ -3445,13 +3445,14 @@ function loadFromAPI() {
     apiGet("galerie"),
     apiGet("publications"),
     apiGet("evenements"),
-    apiGet("projets")
+    apiGet("projets"),
+    apiGet("ressources")
   ]).then(function(results) {
     var apiMems   = results[0] || [];
     var apiGals   = results[1] || [];
     var apiPubs   = results[2] || [];
     var apiEvts   = results[3] || [];
-    var apiProjs  = results[4] || [];
+    var apiProjs  = results[4] || [];     var apiRess   = results[5] || [];
 
     // Convertir format API → format interne
     if (apiMems.length > 0) {
@@ -3478,6 +3479,21 @@ function loadFromAPI() {
           tit:  g.titre || g.tit || "",
           feat: g.featured || g.feat || false,
           bg:   g.bg_color || g.bg || ""
+        };
+      });
+    }
+    if (apiRess.length > 0) {
+      ressources = apiRess.map(function(r) {
+        return {
+          id:    r.id,
+          titre: r.titre || "",
+          desc:  r.description || "",
+          cat:   r.categorie || "",
+          ftype: r.type_fichier || "pdf",
+          lien:  r.lien || "",
+          img:   r.image_url || "",
+          date:  r.created_at ? r.created_at.split("T")[0] : "",
+          views: r.telechargements || 0
         };
       });
     }
