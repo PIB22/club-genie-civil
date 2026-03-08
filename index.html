@@ -1917,25 +1917,27 @@ function doLogin() {
     if (u === AUSER && hash === storedHash) {
       // Succès — générer un token de session
      _loginAttempts = 0;
-      fetch("/api/login", {
+     fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: u, password: p })
       }).then(function(r){ return r.json(); }).then(function(res){
         if (res.token) {
           _apiToken = res.token;
-          sessionStorage.setItem("cgc_session", res.token);
-          sessionStorage.setItem("cgc_session_exp", Date.now() + 3600000);
+          sessionStorage.setItem("cgc_api_token", res.token);
         }
-      }).catch(function(){});
-      var sessionToken = Array.from(crypto.getRandomValues(new Uint8Array(16))).map(function(b){ return b.toString(16).padStart(2,"0"); }).join("");
-      sessionStorage.setItem("cgc_session", sessionToken);
-      sessionStorage.setItem("cgc_session_exp", Date.now() + 3600000);
-      closeLogin();
-      document.getElementById("ap").classList.add("open");
-      document.getElementById("lastmod").textContent = new Date().toLocaleDateString("fr-FR");
-      renderAll();
-      startSessionTimer();
+        closeLogin();
+        document.getElementById("ap").classList.add("open");
+        document.getElementById("lastmod").textContent = new Date().toLocaleDateString("fr-FR");
+        renderAll();
+        startSessionTimer();
+      }).catch(function(){
+        closeLogin();
+        document.getElementById("ap").classList.add("open");
+        document.getElementById("lastmod").textContent = new Date().toLocaleDateString("fr-FR");
+        renderAll();
+        startSessionTimer();
+      });
     } else {
       _loginAttempts++;
       document.getElementById("lgp").value = "";
