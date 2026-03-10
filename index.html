@@ -729,6 +729,37 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
             <div class="af"><label>Stat 4 — Chiffre</label><input type="text" id="e-sn3" oninput="setTxt('sn3',this.value)"></div>
             <div class="af"><label>Stat 4 — Label</label><input type="text" id="e-sl3" oninput="setTxt('sl3',this.value)"></div>
           </div>
+          <!-- Photos Hero -->
+          <div style="margin-top:14px;">
+            <div style="font-size:.72rem;letter-spacing:1px;text-transform:uppercase;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.35);margin-bottom:10px;">📸 Photos de la section Hero</div>
+            <div class="g2" style="gap:14px;">
+
+              <!-- Photo Hero 1 -->
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:14px;">
+                <div style="font-size:.78rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'DM Mono',monospace;">Photo Hero 1</div>
+                <div id="hero1-preview-wrap" style="width:100%;height:90px;background:linear-gradient(135deg,var(--pr),var(--md));border-radius:3px;overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                  <img id="hero1-admin-prev" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
+                  <span id="hero1-no-img" style="font-size:.7rem;color:rgba(255,255,255,0.4);">Aucune photo</span>
+                </div>
+                <div class="af" style="margin-top:4px;">
+                  <input type="text" id="e-hphoto1" placeholder="https://i.ibb.co/..." style="font-size:.76rem;" oninput="previewHeroImg(1,this.value)">
+                </div>
+              </div>
+
+              <!-- Photo Hero 2 -->
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:14px;">
+                <div style="font-size:.78rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'DM Mono',monospace;">Photo Hero 2</div>
+                <div id="hero2-preview-wrap" style="width:100%;height:90px;background:var(--ac);border-radius:3px;overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                  <img id="hero2-admin-prev" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
+                  <span id="hero2-no-img" style="font-size:.7rem;color:rgba(255,255,255,0.4);">Aucune photo</span>
+                </div>
+                <div class="af" style="margin-top:4px;">
+                  <input type="text" id="e-hphoto2" placeholder="https://i.ibb.co/..." style="font-size:.76rem;" oninput="previewHeroImg(2,this.value)">
+                </div>
+              </div>
+
+            </div>
+          </div>
           <button class="btn bp" style="width:100%;margin-top:6px;" onclick="saveHeroConfig()">💾 Enregistrer Hero dans Neon</button>
           <div id="hero-save-msg" style="display:none;margin-top:6px;font-size:.8rem;text-align:center;padding:6px;border-radius:3px;"></div>
         </div>
@@ -2569,7 +2600,9 @@ function saveHeroConfig() {
     hero_stat0_nb:   g("e-sn0"), hero_stat0_lbl: g("e-sl0"),
     hero_stat1_nb:   g("e-sn1"), hero_stat1_lbl: g("e-sl1"),
     hero_stat2_nb:   g("e-sn2"), hero_stat2_lbl: g("e-sl2"),
-    hero_stat3_nb:   g("e-sn3"), hero_stat3_lbl: g("e-sl3")
+    hero_stat3_nb:   g("e-sn3"), hero_stat3_lbl: g("e-sl3"),
+    hero_photo1:     g("e-hphoto1"),
+    hero_photo2:     g("e-hphoto2")
   };
   // Mise à jour live sur le site
   var sT = function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
@@ -2580,7 +2613,26 @@ function saveHeroConfig() {
   sT("sn1",fields.hero_stat1_nb); sT("sl1",fields.hero_stat1_lbl);
   sT("sn2",fields.hero_stat2_nb); sT("sl2",fields.hero_stat2_lbl);
   sT("sn3",fields.hero_stat3_nb); sT("sl3",fields.hero_stat3_lbl);
+  // Mise à jour live des photos Hero
+  if (fields.hero_photo1) previewHeroImg(1, fields.hero_photo1);
+  if (fields.hero_photo2) previewHeroImg(2, fields.hero_photo2);
   saveConfigFields(fields, "hero-save-msg", "Hero sauvegardé dans Neon !");
+}
+
+// ---- Prévisualisation photos Hero (admin) ----
+function previewHeroImg(n, url) {
+  var prev  = document.getElementById("hero" + n + "-admin-prev");
+  var noImg = document.getElementById("hero" + n + "-no-img");
+  if (!prev) return;
+  if (url && url.length > 5) {
+    prev.src = url;
+    prev.style.display = "block";
+    if (noImg) noImg.style.display = "none";
+  } else {
+    prev.src = "";
+    prev.style.display = "none";
+    if (noImg) noImg.style.display = "block";
+  }
 }
 
 // ---- Sauvegarde section À propos vers Neon ----
@@ -4167,6 +4219,9 @@ function startSessionTimer() {
     inp("e-sn1",    cfg.hero_stat1_nb    || ""); inp("e-sl1", cfg.hero_stat1_lbl || "");
     inp("e-sn2",    cfg.hero_stat2_nb    || ""); inp("e-sl2", cfg.hero_stat2_lbl || "");
     inp("e-sn3",    cfg.hero_stat3_nb    || ""); inp("e-sl3", cfg.hero_stat3_lbl || "");
+    // Photos Hero — pré-remplissage admin
+    if (cfg.hero_photo1) { inp("e-hphoto1", cfg.hero_photo1); previewHeroImg(1, cfg.hero_photo1); }
+    if (cfg.hero_photo2) { inp("e-hphoto2", cfg.hero_photo2); previewHeroImg(2, cfg.hero_photo2); }
     // À propos — pré-remplissage admin
     inp("e-atit",   cfg.about_titre  || "");
     inp("e-adesc",  cfg.about_texte  || "");
