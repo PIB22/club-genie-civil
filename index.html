@@ -758,6 +758,18 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
                 </div>
               </div>
 
+              <!-- Photo fond droite Hero -->
+              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,200,80,0.15);border-radius:4px;padding:14px;margin-top:8px;">
+                <div style="font-size:.78rem;color:rgba(255,200,80,0.7);margin-bottom:8px;font-family:'DM Mono',monospace;">🖼️ Photo fond zone droite (gradient)</div>
+                <div style="width:100%;height:90px;background:linear-gradient(to right,var(--dk),var(--pr));border-radius:3px;overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                  <img id="hero-bg-right-admin-prev" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
+                  <span id="hero-bg-right-no-img" style="font-size:.7rem;color:rgba(255,255,255,0.4);">Aucune photo</span>
+                </div>
+                <div class="af" style="margin-top:4px;">
+                  <input type="text" id="e-hero-bg-right" placeholder="https://i.ibb.co/... (zone dégradée droite)" style="font-size:.76rem;" oninput="previewHeroBgRight(this.value)">
+                </div>
+              </div>
+
             </div>
           </div>
           <button class="btn bp" style="width:100%;margin-top:6px;" onclick="saveHeroConfig()">💾 Enregistrer Hero dans Neon</button>
@@ -2602,7 +2614,8 @@ function saveHeroConfig() {
     hero_stat2_nb:   g("e-sn2"), hero_stat2_lbl: g("e-sl2"),
     hero_stat3_nb:   g("e-sn3"), hero_stat3_lbl: g("e-sl3"),
     hero_photo1:     g("e-hphoto1"),
-    hero_photo2:     g("e-hphoto2")
+    hero_photo2:     g("e-hphoto2"),
+    hero_bg_right:   g("e-hero-bg-right")
   };
   // Mise à jour live sur le site
   var sT = function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
@@ -2616,6 +2629,7 @@ function saveHeroConfig() {
   // Mise à jour live des photos Hero
   if (fields.hero_photo1) previewHeroImg(1, fields.hero_photo1);
   if (fields.hero_photo2) previewHeroImg(2, fields.hero_photo2);
+  if (fields.hero_bg_right !== undefined) previewHeroBgRight(fields.hero_bg_right);
   saveConfigFields(fields, "hero-save-msg", "Hero sauvegardé dans Neon !");
 }
 
@@ -2632,6 +2646,22 @@ function previewHeroImg(n, url) {
     prev.src = "";
     prev.style.display = "none";
     if (noImg) noImg.style.display = "block";
+  }
+}
+
+// ---- Prévisualisation photo fond droite Hero ----
+function previewHeroBgRight(url) {
+  var prev  = document.getElementById("hero-bg-right-admin-prev");
+  var noImg = document.getElementById("hero-bg-right-no-img");
+  var img   = document.getElementById("heroRightImg");
+  if (url && url.length > 5) {
+    if (prev)  { prev.src = url; prev.style.display = "block"; }
+    if (noImg) { noImg.style.display = "none"; }
+    if (img)   { img.src = url; img.style.display = "block"; }
+  } else {
+    if (prev)  { prev.src = ""; prev.style.display = "none"; }
+    if (noImg) { noImg.style.display = "block"; }
+    if (img)   { img.src = ""; img.style.display = "none"; }
   }
 }
 
@@ -4222,6 +4252,7 @@ function startSessionTimer() {
     // Photos Hero — pré-remplissage admin
     if (cfg.hero_photo1) { inp("e-hphoto1", cfg.hero_photo1); previewHeroImg(1, cfg.hero_photo1); }
     if (cfg.hero_photo2) { inp("e-hphoto2", cfg.hero_photo2); previewHeroImg(2, cfg.hero_photo2); }
+    if (cfg.hero_bg_right) { inp("e-hero-bg-right", cfg.hero_bg_right); previewHeroBgRight(cfg.hero_bg_right); }
     // À propos — pré-remplissage admin
     inp("e-atit",   cfg.about_titre  || "");
     inp("e-adesc",  cfg.about_texte  || "");
