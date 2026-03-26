@@ -307,19 +307,41 @@ section{padding:96px 5%;}
 
 /* PROJETS */
 #projets{background:#fff;}
-.prg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.prc{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:4/3;}
-.prc.feat{grid-column:span 2;}
+.prg-wrap{position:relative;width:100%;}
+.prg{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:8px 4px 16px;scrollbar-width:none;-ms-overflow-style:none;}
+.prg::-webkit-scrollbar{display:none;}
+.prc{position:relative;overflow:hidden;cursor:pointer;flex:0 0 320px;height:240px;border-radius:6px;transition:transform .3s,box-shadow .3s;}
+.prc:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(15,26,53,0.25);}
 .prb{width:100%;height:100%;transition:transform .5s;display:flex;align-items:center;justify-content:center;}
-.prc:hover .prb{transform:scale(1.04);}
-.pro{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,26,53,0.95) 0%,rgba(15,26,53,0.3) 60%,transparent 100%);padding:22px;display:flex;flex-direction:column;justify-content:flex-end;}
+.prc:hover .prb{transform:scale(1.06);}
+.pro{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,26,53,0.95) 0%,rgba(15,26,53,0.3) 60%,transparent 100%);padding:18px;display:flex;flex-direction:column;justify-content:flex-end;}
 .prs{display:inline-block;font-size:.61rem;letter-spacing:2px;text-transform:uppercase;padding:2px 7px;font-family:"DM Mono",monospace;margin-bottom:6px;border-radius:2px;align-self:flex-start;}
 .prs.ec{background:rgba(160,99,42,0.25);color:#d4a96a;border:1px solid rgba(212,169,106,0.4);}
 .prs.te{background:rgba(46,160,67,0.2);color:#4ade80;border:1px solid rgba(74,222,128,0.3);}
 .prs.pl{background:rgba(41,168,224,0.2);color:#7ec8f0;border:1px solid rgba(126,200,240,0.3);}
 .prtt{font-family:"Bebas Neue",cursive;font-size:1.35rem;color:#fff;letter-spacing:1px;line-height:1.1;margin-bottom:4px;}
-.prc.feat .prtt{font-size:1.95rem;}
 .prde{font-size:.77rem;color:rgba(255,255,255,0.6);line-height:1.5;}
+.prg-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:var(--pr);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+.prg-btn:hover{background:var(--ac);}
+.prg-btn.prg-prev{left:-14px;}
+.prg-btn.prg-next{right:-14px;}
+.prg-dots{display:flex;justify-content:center;gap:6px;margin-top:8px;}
+.prg-dot{width:7px;height:7px;border-radius:50%;background:rgba(45,53,74,0.2);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s;}
+.prg-dot.active{background:var(--ac);transform:scale(1.3);}
+#proj-modal{position:fixed;inset:0;z-index:9500;background:rgba(5,10,25,0.92);display:none;align-items:center;justify-content:center;padding:20px;}
+#proj-modal.open{display:flex;}
+.pm-box{background:#0f1a35;border:1px solid rgba(160,99,42,0.3);max-width:700px;width:100%;border-radius:6px;overflow:hidden;position:relative;max-height:90vh;display:flex;flex-direction:column;}
+.pm-box::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ac),var(--sk));}
+.pm-img{width:100%;height:320px;object-fit:cover;display:block;}
+.pm-bg{width:100%;height:220px;display:block;}
+.pm-body{padding:24px;overflow-y:auto;}
+.pm-stat{display:inline-block;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;font-family:"DM Mono",monospace;margin-bottom:10px;border-radius:2px;}
+.pm-titre{font-family:"Bebas Neue",cursive;font-size:2rem;color:#fff;letter-spacing:2px;line-height:1.1;margin-bottom:12px;}
+.pm-desc{color:rgba(255,255,255,0.72);font-size:.93rem;line-height:1.7;}
+.pm-lien{display:inline-block;margin-top:16px;background:var(--ac);color:#fff;padding:9px 20px;text-decoration:none;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;font-family:"DM Mono",monospace;border-radius:2px;transition:background .2s;}
+.pm-lien:hover{background:#8a5020;}
+.pm-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.1);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.pm-close:hover{background:rgba(255,255,255,0.2);}
 
 /* EVENEMENTS */
 #evenements{background:var(--lt);}
@@ -1869,8 +1891,27 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
   <div class="sl">Réalisations</div>
   <h2 class="stit" id="proj-titre">Nos projets</h2>
   <p class="sdesc" id="proj-desc">Projets concrets menés par nos membres, de la conception à la réalisation.</p>
-  <div class="prg" id="projgrid"></div>
+  <div class="prg-wrap">
+    <button class="prg-btn prg-prev" onclick="scrollCarousel(-1)" aria-label="Précédent">&#8592;</button>
+    <div class="prg" id="projgrid"></div>
+    <button class="prg-btn prg-next" onclick="scrollCarousel(1)" aria-label="Suivant">&#8594;</button>
+  </div>
+  <div class="prg-dots" id="prg-dots"></div>
 </section>
+
+<!-- MODAL PROJET -->
+<div id="proj-modal" onclick="closeProjModal(event)">
+  <div class="pm-box">
+    <button class="pm-close" onclick="closeProjModal()">&#10005;</button>
+    <div id="pm-visual"></div>
+    <div class="pm-body">
+      <span class="pm-stat prs" id="pm-stat"></span>
+      <div class="pm-titre" id="pm-titre"></div>
+      <p class="pm-desc" id="pm-desc"></p>
+      <a class="pm-lien" id="pm-lien" href="#" target="_blank" style="display:none;">Voir le projet &#8594;</a>
+    </div>
+  </div>
+</div>
 
 <!-- EVENEMENTS -->
 <section id="evenements" style="display:none">
@@ -3251,24 +3292,21 @@ var pImgData = "";
 var PSTAT_LABELS = {ec:"En cours", te:"Terminé", pl:"Planifié"};
 var PSTAT_CSS    = {ec:"ec", te:"te", pl:"pl"};
 
-// ---- Render on site ----
+// ---- Render on site — carousel ----
 function renderProjets() {
   var g = document.getElementById('projgrid');
   if (!g) return;
   if (!projetsData.length) {
     g.innerHTML = '<div style="text-align:center;padding:60px;color:var(--st);">Aucun projet pour le moment.</div>';
+    renderDots();
     return;
   }
-  g.innerHTML = projetsData.map(function(p) {
-    var featCls = p.feat ? ' feat' : '';
+  g.innerHTML = projetsData.map(function(p, i) {
     var bg = 'linear-gradient(135deg,' + p.bg1 + ',' + p.bg2 + ')';
     var inner = p.img
       ? '<img src="' + p.img + '" style="width:100%;height:100%;object-fit:cover;">'
       : '<div class="prb" style="background:' + bg + ';height:100%;"></div>';
-    var wrapOpen = p.lien
-      ? '<div class="prc' + featCls + '" onclick="window.open(\'' + p.lien + '\',\'_blank\')" style="cursor:pointer;">'
-      : '<div class="prc' + featCls + '">';
-    return wrapOpen +
+    return '<div class="prc" onclick="openProjModal(' + p.id + ')" data-idx="' + i + '">' +
       inner +
       '<div class="pro">' +
         '<span class="prs ' + PSTAT_CSS[p.stat] + '">' + PSTAT_LABELS[p.stat] + '</span>' +
@@ -3276,7 +3314,60 @@ function renderProjets() {
         '<p class="prde">' + p.desc + '</p>' +
       '</div></div>';
   }).join('');
+  renderDots();
+  // Mettre à jour les dots au scroll
+  g.onscroll = function() {
+    var cardW = 336;
+    var idx = Math.round(g.scrollLeft / cardW);
+    document.querySelectorAll('.prg-dot').forEach(function(d,i){ d.classList.toggle('active', i===idx); });
+  };
 }
+
+function renderDots() {
+  var wrap = document.getElementById('prg-dots'); if (!wrap) return;
+  wrap.innerHTML = projetsData.map(function(_, i) {
+    return '<button class="prg-dot' + (i===0?' active':'') + '" onclick="scrollToCard(' + i + ')"></button>';
+  }).join('');
+}
+
+function scrollCarousel(dir) {
+  var g = document.getElementById('projgrid'); if (!g) return;
+  g.scrollBy({left: dir * 336, behavior: 'smooth'});
+}
+
+function scrollToCard(i) {
+  var g = document.getElementById('projgrid'); if (!g) return;
+  g.scrollTo({left: i * 336, behavior: 'smooth'});
+}
+
+function openProjModal(id) {
+  var p = projetsData.find(function(x){ return x.id === id; }); if (!p) return;
+  var modal = document.getElementById('proj-modal');
+  var vis = document.getElementById('pm-visual');
+  var bg = 'linear-gradient(135deg,' + p.bg1 + ',' + p.bg2 + ')';
+  vis.innerHTML = p.img
+    ? '<img class="pm-img" src="' + p.img + '" alt="' + p.nom + '">'
+    : '<div class="pm-bg" style="background:' + bg + ';"></div>';
+  var stat = document.getElementById('pm-stat');
+  stat.textContent = PSTAT_LABELS[p.stat];
+  stat.className = 'pm-stat prs ' + PSTAT_CSS[p.stat];
+  document.getElementById('pm-titre').textContent = p.nom;
+  document.getElementById('pm-desc').textContent = p.desc;
+  var lien = document.getElementById('pm-lien');
+  if (p.lien) { lien.href = p.lien; lien.style.display = 'inline-block'; }
+  else { lien.style.display = 'none'; }
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProjModal(e) {
+  if (e && e.target !== document.getElementById('proj-modal')) return;
+  document.getElementById('proj-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Fermer modal avec Escape
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeProjModal(); });
 
 // ---- Render in admin ----
 function renderProjAdmin(filt) {
