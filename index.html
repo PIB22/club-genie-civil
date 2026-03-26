@@ -332,7 +332,7 @@ section{padding:96px 5%;}
 #proj-modal.open{display:flex;}
 .pm-box{background:#0f1a35;border:1px solid rgba(160,99,42,0.3);max-width:700px;width:100%;border-radius:6px;overflow:hidden;position:relative;max-height:90vh;display:flex;flex-direction:column;}
 .pm-box::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ac),var(--sk));}
-.pm-img{width:100%;height:320px;object-fit:cover;display:block;}
+.pm-img{width:100%;max-height:420px;object-fit:contain;display:block;background:#060f1e;}
 .pm-bg{width:100%;height:220px;display:block;}
 .pm-body{padding:24px;overflow-y:auto;}
 .pm-stat{display:inline-block;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;font-family:"DM Mono",monospace;margin-bottom:10px;border-radius:2px;}
@@ -3304,7 +3304,7 @@ function renderProjets() {
   g.innerHTML = projetsData.map(function(p, i) {
     var bg = 'linear-gradient(135deg,' + p.bg1 + ',' + p.bg2 + ')';
     var inner = p.img
-      ? '<img src="' + p.img + '" style="width:100%;height:100%;object-fit:cover;">'
+      ? '<img src="' + p.img + '" style="width:100%;height:100%;object-fit:contain;background:#0d1f35;">'
       : '<div class="prb" style="background:' + bg + ';height:100%;"></div>';
     return '<div class="prc" onclick="openProjModal(' + p.id + ')" data-idx="' + i + '">' +
       inner +
