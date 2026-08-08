@@ -453,6 +453,72 @@ footer{background:#050d16;padding:48px 5% 24px;border-top:2px solid rgba(160,99,
 .fc ul a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:.81rem;transition:color .2s;}
 .fc ul a:hover{color:var(--ac);}
 .fb{border-top:1px solid rgba(255,255,255,0.06);padding-top:18px;display:flex;justify-content:space-between;align-items:center;}
+
+/* ============================================================
+   RESTYLE ESTHÉTIQUE 2026 — couche visuelle uniquement.
+   Aucun ID/class structurel modifié : le JS, les appels /api
+   et le panel admin restent strictement identiques.
+   ============================================================ */
+
+/* --- Nav : légère profondeur + soulignement animé --- */
+nav{box-shadow:0 4px 24px rgba(0,0,0,0.35);}
+.nav-links a{position:relative;padding-bottom:3px;transition:color .2s;}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--ac);transition:width .25s ease;}
+.nav-links a:hover::after{width:100%;}
+.abtn:hover{background:rgba(41,168,224,0.22);transform:translateY(-1px);}
+
+/* --- Hero : traitement cinématique plein cadre --- */
+.hero{background:radial-gradient(circle at 75% 30%,var(--md) 0%,var(--dk) 55%,#0a0f1c 100%);}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--dk) 0%,rgba(26,32,48,0.85) 42%,rgba(26,32,48,0.15) 70%);z-index:1;pointer-events:none;}
+.himg{filter:saturate(1.05) contrast(1.05);opacity:.9;}
+.himg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--dk) 0%,transparent 30%);}
+.htag{box-shadow:0 0 0 1px rgba(41,168,224,0.15) inset;}
+.htitle{text-shadow:0 8px 40px rgba(0,0,0,0.45);}
+.htitle .ac,#htitle-ac{color:var(--ac);text-shadow:0 0 30px rgba(154,93,57,0.5);}
+.hstats{bottom:0;left:0;right:0;background:rgba(10,16,32,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,0.08);padding:22px 5%;justify-content:space-around;gap:0;}
+.hstat{position:relative;flex:1;}
+.hstat+.hstat::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:60%;background:rgba(255,255,255,0.1);}
+.hsnum{text-shadow:0 0 24px rgba(154,93,57,0.35);}
+
+/* --- Boutons : effet "shine" au survol --- */
+.bpr,.bsc{position:relative;overflow:hidden;}
+.bpr::after,.bsc::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.25) 50%,transparent 70%);transform:translateX(-120%);transition:transform .5s ease;}
+.bpr:hover::after,.bsc:hover::after{transform:translateX(120%);}
+.bpr:hover{background:#8a5020;transform:translateY(-2px);box-shadow:0 10px 24px rgba(154,93,57,0.35);}
+.bsc:hover{border-color:var(--sk);color:var(--sk);transform:translateY(-2px);}
+
+/* --- Cartes (membres, publications, projets, ressources) : lift + glow --- */
+.mc,.pc,.prc,.rc{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;}
+.mc:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.18);}
+.pc:hover{transform:translateY(-4px);border-color:rgba(154,93,57,0.4);box-shadow:0 16px 32px rgba(0,0,0,0.3);}
+.prc:hover{transform:translateY(-5px) scale(1.015);box-shadow:0 22px 44px rgba(0,0,0,0.4);}
+.rc:hover{transform:translateY(-4px);border-color:var(--ac);box-shadow:0 14px 28px rgba(0,0,0,0.25);}
+.rc:hover .ric{transform:scale(1.08) rotate(3deg);}
+.ric{transition:transform .3s;}
+
+/* --- Section labels : accent renforcé --- */
+.sl{position:relative;}
+.sl::before{content:"";width:24px;height:2px;background:var(--ac);display:inline-block;}
+.stit{position:relative;}
+
+/* --- Événements & ressources : légère profondeur --- */
+.evc>*{transition:transform .3s,box-shadow .3s;}
+.scard{box-shadow:0 20px 50px rgba(0,0,0,0.25);}
+
+/* --- Footer : icônes sociales qui décollent au survol --- */
+.fsl{transition:all .25s;}
+.fsl:hover{background:var(--ac);border-color:var(--ac);color:#fff;transform:translateY(-3px);}
+.fc a{transition:color .2s,padding-left .2s;}
+.fc a:hover{color:var(--sk);padding-left:3px;}
+
+/* --- Boutons de filtre (pf/cnt) : accent au clic --- */
+.pf.active,.cnt.active{background:var(--ac)!important;border-color:var(--ac)!important;color:#fff!important;}
+.pf:hover,.cnt:hover{border-color:var(--ac);color:#fff;}
+
+@media(max-width:900px){
+  .hero::before{background:linear-gradient(180deg,var(--dk) 30%,rgba(26,32,48,0.55) 100%);}
+  .hstats{position:static;background:var(--dk);}
+}
 .fb p{color:rgba(255,255,255,0.2);font-size:.73rem;font-family:"DM Mono",monospace;}
 
 /* MODAL */
@@ -4600,5 +4666,154 @@ function startSessionTimer() {
 
 <!-- SAVE TOAST -->
 <div id="save-toast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(46,160,67,0.95);color:#fff;padding:10px 18px;border-radius:4px;font-size:.82rem;font-family:'DM Mono',monospace;letter-spacing:1px;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:opacity .3s;"></div>
+
+<style>
+/* ============================================================
+   EFFETS INTERACTIFS 3D — additif, namespace cgc3d.
+   N'ajoute aucun ID/classe existant, ne touche à aucun script
+   admin/API. Désactivable via prefers-reduced-motion.
+   ============================================================ */
+.cgc3d-tilt{
+  transform:perspective(900px) rotateX(var(--cgc-rx,0deg)) rotateY(var(--cgc-ry,0deg)) scale(var(--cgc-sc,1));
+  transition:transform .5s cubic-bezier(.2,.8,.2,1);
+  will-change:transform;
+  position:relative;
+}
+.cgc3d-tilt.cgc-active{transition:transform .05s linear;}
+.cgc3d-tilt::before{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at var(--cgc-mx,50%) var(--cgc-my,50%),rgba(255,255,255,var(--cgc-glare,0.15)),transparent 60%);
+  transition:opacity .3s;
+}
+.cgc3d-tilt.cgc-active::before{opacity:1;}
+
+.cgc-reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.cgc-reveal.cgc-in{opacity:1;transform:translateY(0);}
+
+.cgc-transition{position:relative;height:88px;overflow:hidden;pointer-events:none;}
+.cgc-transition__line{
+  position:absolute;left:0;right:0;top:50%;height:2px;transform:translateY(-50%);
+  background:linear-gradient(90deg,transparent,var(--sk),var(--ac),transparent);
+  background-size:200% 100%;animation:cgcLine 6s linear infinite;opacity:.55;
+}
+@keyframes cgcLine{0%{background-position:0% 0;}100%{background-position:200% 0;}}
+
+@media(prefers-reduced-motion:reduce){
+  .cgc3d-tilt{transform:none!important;transition:none!important;}
+  .cgc3d-tilt::before{display:none!important;}
+  .cgc-reveal{opacity:1!important;transform:none!important;transition:none!important;}
+  .cgc-transition__line{animation:none!important;}
+}
+</style>
+<script>
+(function(){
+  "use strict";
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced) return; // rien à initialiser, le CSS ci-dessus gère déjà l'état statique
+
+  function ready(fn){ document.readyState!=='loading' ? fn() : document.addEventListener('DOMContentLoaded',fn); }
+
+  ready(function(){
+
+    /* ---- 1) Tilt 3D à la souris + glow qui suit le curseur ---- */
+    /* Reprend exactement la formule de src/components/tilt-card.tsx (TiltCard) */
+    var tiltConfigs = [
+      { sel:'.mc, .pc, .rc, .hstat, .scard', tiltAmount:12, scale:1.02, glare:0.15 },
+      { sel:'.prc', tiltAmount:8, scale:1.02, glare:0.15 }
+    ];
+    tiltConfigs.forEach(function(cfg){
+      document.querySelectorAll(cfg.sel).forEach(function(el){
+        el.classList.add('cgc3d-tilt');
+        el.style.setProperty('--cgc-glare', cfg.glare);
+        el.addEventListener('mouseenter', function(){ el.classList.add('cgc-active'); });
+        el.addEventListener('mousemove', function(e){
+          var r = el.getBoundingClientRect();
+          var x = e.clientX - r.left, y = e.clientY - r.top;
+          var cx = r.width/2, cy = r.height/2;
+          var rotateX = ((y - cy) / cy) * -cfg.tiltAmount;
+          var rotateY = ((x - cx) / cx) * cfg.tiltAmount;
+          el.style.setProperty('--cgc-rx', rotateX.toFixed(2)+'deg');
+          el.style.setProperty('--cgc-ry', rotateY.toFixed(2)+'deg');
+          el.style.setProperty('--cgc-sc', cfg.scale);
+          el.style.setProperty('--cgc-mx', ((x/r.width)*100).toFixed(1)+'%');
+          el.style.setProperty('--cgc-my', ((y/r.height)*100).toFixed(1)+'%');
+        });
+        el.addEventListener('mouseleave', function(){
+          el.classList.remove('cgc-active');
+          el.style.setProperty('--cgc-rx','0deg');
+          el.style.setProperty('--cgc-ry','0deg');
+          el.style.setProperty('--cgc-sc','1');
+        });
+      });
+    });
+
+    /* ---- 2) Reveal au scroll (staggered) ---- */
+    var revealGroups = ['#membres .mg', '#publications .pg2', '#projets .prg', '#ressources .rg', '#galerie .ggd'];
+    revealGroups.forEach(function(sel){
+      var grid = document.querySelector(sel);
+      if(!grid) return;
+      Array.prototype.forEach.call(grid.children, function(child, i){
+        child.classList.add('cgc-reveal');
+        child.style.transitionDelay = (Math.min(i, 8) * 70) + 'ms'; // même cadence que ScrollReveal.tsx
+      });
+    });
+    // titres/labels de section aussi (pas de stagger, ils arrivent en premier)
+    document.querySelectorAll('section > .sl, section > .stit, section > .sdesc').forEach(function(el){
+      el.classList.add('cgc-reveal');
+    });
+
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('cgc-in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, {threshold:0.08, rootMargin:'0px 0px -8% 0px'}); // paramètres identiques à ScrollReveal.tsx
+      document.querySelectorAll('.cgc-reveal').forEach(function(el){ io.observe(el); });
+    } else {
+      document.querySelectorAll('.cgc-reveal').forEach(function(el){ el.classList.add('cgc-in'); });
+    }
+
+    /* ---- 3) Parallax léger sur la photo du hero ---- */
+    var heroImg = document.getElementById('himg');
+    var hero = document.getElementById('home');
+    if(heroImg && hero){
+      window.addEventListener('scroll', function(){
+        var r = hero.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > window.innerHeight) return;
+        var offset = r.top * -0.08;
+        heroImg.style.transform = 'translateY(' + offset.toFixed(1) + 'px) scale(1.06)';
+      }, {passive:true});
+    }
+
+    /* ---- 4) Dégradés de fusion entre sections ---- */
+    /* Reprend section-transition.tsx : un pont linear-gradient(bgA -> bgB)
+       de ~88px avec une ligne lumineuse, inséré entre chaque section visible.
+       Les couleurs sont lues en live via getComputedStyle : robuste même si
+       #evenements reste display:none. */
+    var visibleSections = Array.prototype.filter.call(
+      document.querySelectorAll('section'),
+      function(sec){ return getComputedStyle(sec).display !== 'none'; }
+    );
+    for(var i=0; i<visibleSections.length-1; i++){
+      var a = visibleSections[i], b = visibleSections[i+1];
+      var bgA = getComputedStyle(a).backgroundColor;
+      var bgB = getComputedStyle(b).backgroundColor;
+      if(bgA === bgB) continue; // pas de transition nécessaire, même couleur
+      var bridge = document.createElement('div');
+      bridge.className = 'cgc-transition';
+      bridge.setAttribute('aria-hidden','true');
+      bridge.style.background = 'linear-gradient(to bottom,' + bgA + ',' + bgB + ')';
+      var line = document.createElement('span');
+      line.className = 'cgc-transition__line';
+      bridge.appendChild(line);
+      a.parentNode.insertBefore(bridge, a.nextSibling);
+    }
+
+  });
+})();
+</script>
 </body>
 </html>
